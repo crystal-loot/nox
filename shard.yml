@@ -1,0 +1,9 @@
+name: nox
+version: 0.1.0
+
+authors:
+  - matthewmcgarvey <matthewmcgarvey14@gmail.com>
+
+crystal: 1.2.2
+
+license: MIT
