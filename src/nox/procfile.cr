@@ -1,6 +1,10 @@
 class Nox::Procfile
   ENTRY_REGEX = /^([\w-]+):\s+(.+)$/
 
+  def self.parse_file(file : String) : self
+    parse(File.read(file))
+  end
+
   def self.parse(content : String) : self
     proc_file = new
     content.each_line do |line|
