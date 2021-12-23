@@ -1,11 +1,12 @@
 class Nox::Runner
-  getter done = Channel(Nil).new
+  private getter done = Channel(Nil).new
+  private getter processes : Array(Nox::Process)
 
-  def initialize(@procfile : Nox::Procfile)
+  def initialize(procfile : Nox::Procfile)
+    @processes = procfile.entries.map { |entry| Nox::Process.new(entry, dir: Dir.current, output: STDOUT) }
   end
 
   def run
-    processes = @procfile.entries.map { |entry| Nox::Process.new(entry, dir: Dir.current) }
     processes.each do |process|
       spawn do
         process.run
@@ -16,5 +17,11 @@ class Nox::Runner
     processes.size.times do
       done.receive
     end
+
+    puts "ALL DONE!"
+  end
+
+  def interrupt
+    processes.each(&.interrupt)
   end
 end

@@ -1,11 +1,17 @@
 class Nox::Process
   @process : ::Process?
 
-  def initialize(@procfile_entry : Nox::Procfile::Entry, @dir : String)
+  def initialize(@procfile_entry : Nox::Procfile::Entry, @dir : String, @output : IO)
   end
 
   def run
-    process = @process = ::Process.new(@procfile_entry.command, output: STDOUT, shell: true, chdir: @dir)
+    process = @process = ::Process.new(
+      @procfile_entry.command,
+      output: @output,
+      error: @output,
+      shell: true,
+      chdir: @dir
+    )
     process.wait
   end
 
