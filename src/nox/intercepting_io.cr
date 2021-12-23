@@ -21,8 +21,8 @@ class Nox::InterceptingIO < IO
       str << @name.ljust(max_name_size + 1)
       str << "\033[0m| "
       str.write(slice)
-      str << '\n'
     end
+    result = result.strip + "\n"
     @wrapped.write(result.to_slice)
   end
 
