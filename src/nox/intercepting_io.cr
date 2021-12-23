@@ -1,8 +1,14 @@
 class Nox::InterceptingIO < IO
+  COLORS = [2, 3, 4, 5, 6, 42, 130, 103, 129, 108]
+
   @@names = [] of String
+
+  @color : Int32
 
   def initialize(@wrapped : IO, @name : String)
     @@names << @name
+    idx = @@names.size - 1
+    @color = COLORS[idx % COLORS.size]
   end
 
   def read(slice : Bytes)
@@ -10,9 +16,9 @@ class Nox::InterceptingIO < IO
   end
 
   def write(slice : Bytes) : Nil
-    @name.ljust(max_name_size)
     result = String.build do |str|
-      str << @name.ljust(max_name_size)
+      str << "\033[1;38;5;#{@color}m"
+      str << @name.ljust(max_name_size + 1)
       str << "\033[0m| "
       str.write(slice)
       str << '\n'
