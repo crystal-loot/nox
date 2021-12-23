@@ -2,7 +2,7 @@ class Nox::Runner
   private getter done = Channel(Nil).new
   private getter processes : Array(Nox::Process)
 
-  def initialize(procfile : Nox::Procfile, @output = STDOUT)
+  def initialize(procfile : Nox::Procfile, @output : IO)
     @processes = procfile.entries.map { |entry| Nox::Process.new(entry, dir: Dir.current, output: @output) }
   end
 
