@@ -1,10 +1,12 @@
 class Nox::Process
   @process : ::Process?
 
-  def initialize(@procfile_entry : Nox::Procfile::Entry, @dir : String, @output : IO)
+  def initialize(@procfile_entry : Nox::Procfile::Entry, @dir : String, output : IO)
+    @output = Nox::InterceptingIO.new(output, @procfile_entry.process_type)
   end
 
   def run
+    @output.puts("Running...")
     process = @process = ::Process.new(
       @procfile_entry.command,
       output: @output,

@@ -1,4 +1,5 @@
 require "./nox/procfile"
+require "./nox/intercepting_io"
 require "./nox/process"
 require "./nox/runner"
 
