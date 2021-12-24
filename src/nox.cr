@@ -6,4 +6,11 @@ require "./nox/runner"
 
 module Nox
   VERSION = "0.1.0"
+
+  def self.run(file : String)
+    procfile = Nox::Procfile.parse_file(file)
+    runner = Nox::Runner.new(procfile, output: STDOUT)
+    Signal::INT.trap { runner.interrupt_or_kill }
+    runner.run
+  end
 end

@@ -17,8 +17,5 @@ OptionParser.parse do |parser|
 end
 
 if start
-  procfile = Nox::Procfile.parse_file(file)
-  runner = Nox::Runner.new(procfile, output: STDOUT)
-  Signal::INT.trap { runner.interrupt_or_kill }
-  runner.run
+  Nox.run(file)
 end
