@@ -1,9 +1,22 @@
 class Nox::InterceptingIO < IO
-  COLORS = [2, 3, 4, 5, 6, 42, 130, 103, 129, 108]
+  COLORS = [
+    Colorize::ColorANSI::Cyan,
+    Colorize::ColorANSI::Yellow,
+    Colorize::ColorANSI::Green,
+    Colorize::ColorANSI::Magenta,
+    Colorize::ColorANSI::Red,
+    Colorize::ColorANSI::Blue,
+    Colorize::ColorANSI::LightCyan,
+    Colorize::ColorANSI::LightYellow,
+    Colorize::ColorANSI::LightGreen,
+    Colorize::ColorANSI::LightMagenta,
+    Colorize::ColorANSI::LightRed,
+    Colorize::ColorANSI::LightBlue,
+  ]
 
   @@names = [] of String
 
-  @color : Int32
+  @color : Colorize::ColorANSI
 
   def initialize(@wrapped : IO, @name : String)
     @@names << @name
@@ -20,9 +33,8 @@ class Nox::InterceptingIO < IO
       .lines
       .each do |line|
         result = String.build do |str|
-          str << "\033[1;38;5;#{@color}m"
-          str << @name.ljust(max_name_size + 1)
-          str << "\033[0m| "
+          str << @name.ljust(max_name_size + 1).sub(@name, @name.colorize(@color).to_s)
+          str << "| "
           str << line
         end
         @wrapped.puts(result.chomp)

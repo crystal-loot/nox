@@ -1,3 +1,4 @@
+require "colorize"
 require "./nox/procfile"
 require "./nox/intercepting_io"
 require "./nox/process"
