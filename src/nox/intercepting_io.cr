@@ -16,14 +16,17 @@ class Nox::InterceptingIO < IO
   end
 
   def write(slice : Bytes) : Nil
-    result = String.build do |str|
-      str << "\033[1;38;5;#{@color}m"
-      str << @name.ljust(max_name_size + 1)
-      str << "\033[0m| "
-      str.write(slice)
-    end
-    result = result.strip + "\n"
-    @wrapped.write(result.to_slice)
+    String.build(&.write(slice))
+      .lines
+      .each do |line|
+        result = String.build do |str|
+          str << "\033[1;38;5;#{@color}m"
+          str << @name.ljust(max_name_size + 1)
+          str << "\033[0m| "
+          str << line
+        end
+        @wrapped.puts(result.chomp)
+      end
   end
 
   private def max_name_size : Int32
