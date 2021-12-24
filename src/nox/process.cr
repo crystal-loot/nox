@@ -6,7 +6,6 @@ class Nox::Process
   end
 
   def run
-    @output.puts("Running...")
     process = @process = ::Process.new(
       @procfile_entry.command,
       output: @output,
@@ -14,14 +13,18 @@ class Nox::Process
       shell: true,
       chdir: @dir
     )
+    @output.print "Starting with pid of #{process.pid}"
     process.wait
+    @output.print "Done"
   end
 
   def interrupt
+    @output.print "Attempting to interrupt..."
     @process.try &.signal(Signal::INT)
   end
 
   def kill
+    @output.print "Attempting to kill..."
     @process.try &.signal(Signal::KILL)
   end
 end

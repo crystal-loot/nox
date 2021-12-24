@@ -7,7 +7,6 @@ class Nox::Runner
   end
 
   def run
-    @output.puts "Nox starting processes..."
     processes.each do |process|
       spawn do
         process.run
@@ -18,8 +17,6 @@ class Nox::Runner
     processes.size.times do
       done.receive
     end
-
-    puts "ALL DONE!"
   end
 
   def interrupt
