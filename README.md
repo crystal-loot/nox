@@ -1,6 +1,7 @@
 # nox
 
-TODO: Write a description here
+Nox is a process manager for Procfiles written in Crystal.
+The reason for its existence is so that [Lucky](https://luckyframework.org/) can ship with a built-in process runner instead of requiring one to be installed.
 
 ## Installation
 
@@ -14,17 +15,29 @@ TODO: Write a description here
 
 2. Run `shards install`
 
+## Command Line Installation
+
+- Clone the repo
+- Run `shards build nox`
+- Run `mv bin/nox /usr/local/bin` or to a different location that is on your `$PATH`
+
+## Command Line Usage
+
+```
+nox --help # print help info
+
+nox start # run Procfile in current directory
+
+nox start -f Procfile.dev # run Procfile.dev in current directory
+```
+
 ## Usage
 
 ```crystal
 require "nox"
+
+Nox.run("Procfile") # runs the Procfile and exits when the processes are all done or the program is interrupted (ctrl-c)
 ```
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
@@ -36,4 +49,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [matthewmcgarvey](https://github.com/matthewmcgarvey) - creator and maintainer
+- [Matthew McGarvey](https://github.com/matthewmcgarvey) - creator and maintainer
