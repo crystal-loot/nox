@@ -19,7 +19,9 @@ class Nox::Runner
     end
   end
 
-  def interrupt
+  def interrupt_or_kill
     processes.each(&.interrupt)
+    sleep 5.seconds
+    processes.each(&.kill)
   end
 end
