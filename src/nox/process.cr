@@ -13,18 +13,27 @@ class Nox::Process
       shell: true,
       chdir: @dir
     )
-    @output.print "Starting with pid of #{process.pid}"
+    print_bold "Starting with pid of #{process.pid}"
     process.wait
-    @output.print "Done"
+    print_bold "Done"
+    @process = nil
   end
 
   def interrupt
-    @output.print "Attempting to interrupt..."
-    @process.try &.signal(Signal::INT)
+    if process = @process
+      print_bold "Attempting to interrupt..."
+      process.signal(Signal::INT)
+    end
   end
 
   def kill
-    @output.print "Attempting to kill..."
-    @process.try &.signal(Signal::KILL)
+    if process = @process
+      print_bold "Attempting to kill..."
+      process.signal(Signal::KILL)
+    end
+  end
+
+  private def print_bold(str : String) : Nil
+    @output.print str.colorize.bold.to_s
   end
 end
