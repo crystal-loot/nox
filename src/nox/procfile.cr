@@ -1,4 +1,4 @@
-class Nox::Procfile
+struct Nox::Procfile
   ENTRY_REGEX = /^([\w-]+):\s+(.+)$/
 
   def self.parse_file(file : String) : self
@@ -16,7 +16,7 @@ class Nox::Procfile
 
   getter entries = [] of Nox::Procfile::Entry
 
-  class Entry
+  struct Entry
     getter process_type : String
     getter command : String
 
