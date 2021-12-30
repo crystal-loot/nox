@@ -11,3 +11,11 @@ license: MIT
 targets:
   nox:
     main: src/nox/cli.cr
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.14.0
+  spectator:
+    gitlab: arctic-fox/spectator
+    version: ~> 0.10.3
