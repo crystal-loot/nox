@@ -1,16 +1,15 @@
 require "../spec_helper"
 
 Spectator.describe Nox::InterceptingIO do
+  include ColorizeHelper
+
   it "applies the given name to each line of output with a color" do
     wrapped = IO::Memory.new
     intercepting_io = Nox::InterceptingIO.new(wrapped, "foo")
 
     intercepting_io.print("line 1\nline 2")
 
-    expect(wrapped.to_s.lines).to contain_exactly(
-      "#{"foo".colorize(:cyan)} | line 1",
-      "#{"foo".colorize(:cyan)} | line 2"
-    )
+    expect(decolorize(wrapped.to_s)).to eq("foo | line 1\nfoo | line 2\n")
   end
 
   it "adjusts padding of name based on largest one" do
@@ -18,12 +17,9 @@ Spectator.describe Nox::InterceptingIO do
     intercepting_io = Nox::InterceptingIO.new(wrapped, "foo")
     Nox::InterceptingIO.new(wrapped, "longer_name")
 
-    intercepting_io.print("line 1\nline 2")
+    intercepting_io.print("hello")
 
-    expect(wrapped.to_s.lines).to contain_exactly(
-      "#{"foo".colorize(:cyan)}         | line 1",
-      "#{"foo".colorize(:cyan)}         | line 2"
-    )
+    expect(decolorize(wrapped.to_s)).to eq("foo         | hello\n")
   end
 
   it "applies a different color for each name" do
