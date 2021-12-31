@@ -1,0 +1,26 @@
+name: Nox CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: "*"
+
+jobs:
+  check_format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: crystal-lang/install-crystal@v1
+      - run: shards install
+      - name: Check Formatting
+        run: crystal tool format --check
+      - name: Lint
+        run: ./bin/ameba
+  specs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: crystal-lang/install-crystal@v1
+      - run: shards install
+      - run: crystal spec
