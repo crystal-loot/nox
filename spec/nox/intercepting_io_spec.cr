@@ -25,4 +25,17 @@ Spectator.describe Nox::InterceptingIO do
       "#{"foo".colorize(:cyan)}         | line 2"
     )
   end
+
+  it "applies a different color for each name" do
+    wrapped = IO::Memory.new
+    foo_io = Nox::InterceptingIO.new(wrapped, "foo")
+    bar_io = Nox::InterceptingIO.new(wrapped, "bar")
+
+    foo_io.print("hello")
+    bar_io.print("world")
+    output = wrapped.to_s
+
+    expect(output).to contain("foo".colorize(:cyan).to_s)
+    expect(output).to contain("bar".colorize(:yellow).to_s)
+  end
 end
