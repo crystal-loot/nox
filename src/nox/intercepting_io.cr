@@ -39,7 +39,6 @@ class Nox::InterceptingIO < IO
         if !line.ends_with?(/[\n\r]/)
           str << "\n"
         end
-
       end
       @wrapped.print(result)
     end
