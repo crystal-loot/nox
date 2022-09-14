@@ -30,14 +30,17 @@ class Nox::InterceptingIO < IO
 
   def write(slice : Bytes) : Nil
     String.build(&.write(slice))
-      .lines
+      .split(/(?<=[\n\r])/)
       .each do |line|
         result = String.build do |str|
           str << @name.ljust(max_name_size + 1).sub(@name, @name.colorize(@color).to_s)
           str << "| "
           str << line
+          if !line.ends_with?(/[\n\r]/)
+            str << "\n"
+          end
         end
-        @wrapped.puts(result.chomp)
+        @wrapped.print(result)
       end
   end
 
