@@ -14,7 +14,6 @@ Spectator.describe Nox::Process do
 
     expect(output.shift).to match(/web | Starting with pid of \d+/)
     expect(output.shift).to eq("web | hello")
-    expect(output.shift).to eq("web | ")
     expect(output.shift).to eq("web | Done")
   end
 
