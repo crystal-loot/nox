@@ -34,4 +34,13 @@ Spectator.describe Nox::InterceptingIO do
     expect(output).to contain("foo".colorize(:cyan).to_s)
     expect(output).to contain("bar".colorize(:yellow).to_s)
   end
+
+  it "handles carriage returns" do
+    wrapped = IO::Memory.new
+    intercepting_io = Nox::InterceptingIO.new(wrapped, "foo")
+
+    intercepting_io.print("line 1 - 1%\rline 1 - 2%")
+
+    expect(decolorize(wrapped.to_s)).to eq("foo | line 1 - 1%\rfoo | line 1 - 2%\n")
+  end
 end

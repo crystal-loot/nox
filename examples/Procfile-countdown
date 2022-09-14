@@ -1,0 +1,1 @@
+countdown: while true; do printf '%s\r' "$(date)"; sleep 1; done

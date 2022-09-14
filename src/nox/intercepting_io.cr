@@ -29,16 +29,19 @@ class Nox::InterceptingIO < IO
   end
 
   def write(slice : Bytes) : Nil
-    String.build(&.write(slice))
-      .lines
-      .each do |line|
-        result = String.build do |str|
-          str << @name.ljust(max_name_size + 1).sub(@name, @name.colorize(@color).to_s)
-          str << "| "
-          str << line
+    lines = String.build(&.write(slice)).split(/(?<=[\n\r])/)
+    lines.pop if lines.last.blank?
+    lines.each do |line|
+      result = String.build do |str|
+        str << @name.ljust(max_name_size + 1).sub(@name, @name.colorize(@color).to_s)
+        str << "| "
+        str << line
+        if !line.ends_with?(/[\n\r]/)
+          str << "\n"
         end
-        @wrapped.puts(result.chomp)
       end
+      @wrapped.print(result)
+    end
   end
 
   private def max_name_size : Int32
