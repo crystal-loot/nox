@@ -17,5 +17,23 @@ Spectator.describe Nox::Procfile do
         procfile_entry("frontend", "yarn start")
       )
     end
+
+    it "handles spaces and comments in various places" do
+      content = <<-PROCFILE
+
+      web: crystal src/app.cr
+
+      # comment!
+      frontend: yarn start
+
+      PROCFILE
+
+      result = Nox::Procfile.parse(content)
+
+      expect(result.entries).to contain_exactly(
+        procfile_entry("web", "crystal src/app.cr"),
+        procfile_entry("frontend", "yarn start")
+      )
+    end
   end
 end
