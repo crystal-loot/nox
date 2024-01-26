@@ -28,11 +28,19 @@ class Nox::Process
   def kill
     with_process do |process|
       print_bold "Attempting to kill..."
-      process.signal(Signal::KILL)
+      {% if compare_versions(Crystal::VERSION, "1.8.0") < 0 %}
+        {% if flag?(:win32) %}
+          process.terminate
+        {% else %}
+          process.signal(Signal::KILL)
+        {% end %}
+      {% else %}
+        process.terminate(graceful: false)
+      {% end %}
     end
   end
 
-  private def with_process
+  private def with_process(&)
     if (process = @process) && process.exists?
       yield process
     end

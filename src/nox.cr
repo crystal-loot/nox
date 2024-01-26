@@ -10,7 +10,12 @@ module Nox
   def self.run(file : String)
     procfile = Nox::Procfile.parse_file(file)
     runner = Nox::Runner.new(procfile, output: STDOUT)
-    Signal::INT.trap { runner.interrupt_or_kill }
+    {% if compare_versions(Crystal::VERSION, "1.8.0") < 0 %}
+      {% raise "Windows requires >= 1.8.0" if flag?(:win32) %}
+      Signal::INT.trap { runner.interrupt_or_kill }
+    {% else %}
+      ::Process.on_interrupt { runner.interrupt_or_kill }
+    {% end %}
     runner.run
   end
 end
