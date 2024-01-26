@@ -11,6 +11,7 @@ The reason for its existence is so that [Lucky](https://luckyframework.org/) can
    dependencies:
      nox:
        github: matthewmcgarvey/nox
+       version: ">= 0.2.0, < 0.3.0"
    ```
 
 2. Run `shards install`
