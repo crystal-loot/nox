@@ -40,7 +40,7 @@ class Nox::Process
     end
   end
 
-  private def with_process
+  private def with_process(&)
     if (process = @process) && process.exists?
       yield process
     end

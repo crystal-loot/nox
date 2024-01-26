@@ -45,6 +45,6 @@ class Nox::InterceptingIO < IO
   end
 
   private def max_name_size : Int32
-    @@names.map(&.size).max
+    @@names.max_of(&.size)
   end
 end
